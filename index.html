@@ -109,6 +109,8 @@
     const cpsEl = document.getElementById("cps");
     const upgradeCostEl = document.getElementById("upgradeCost");
     const upgradeBtn = document.getElementById("upgradeBtn");
+    const clickUpgradeBtn = document.getElementById("clickUpgradeBtn");
+    const superMinerBtn = document.getElementById("superMinerBtn");
 
     function updateUI() {
       coinsEl.textContent = Math.floor(coins);
@@ -130,7 +132,8 @@
 
     function clickCoin() {
       coins += clickPower;
-      function buyClickUpgrade() {
+      // Click power upgrade
+    function buyClickUpgrade() {
       if (coins >= clickUpgradeCost) {
         coins -= clickUpgradeCost;
         clickPower += 1;
@@ -138,7 +141,9 @@
         updateUI();
       }
     }
+    }
 
+    // Super miner upgrade
     function buySuperMiner() {
       if (coins >= superMinerCost) {
         coins -= superMinerCost;
@@ -146,6 +151,7 @@
         superMinerCost = Math.floor(superMinerCost * 2);
         updateUI();
       }
+    }
     }
 
     updateUI();
@@ -158,6 +164,7 @@
         upgradeCost = Math.floor(upgradeCost * 1.5);
         updateUI();
       }
+    }
     }
 
     // Idle income loop (once per second)
