@@ -1,148 +1,195 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Simple Idle Game</title>
-<style>
-body {
-font-family: Arial, sans-serif;
-background: #1e1e2f;
-color: #ffffff;
-display: flex;
-justify-content: center;
-align-items: center;
-height: 100vh;
-margin: 0;
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simple Idle Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #1e1e2f;
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
 
+    .game {
+      background: #2a2a40;
+      padding: 20px 30px;
+      border-radius: 12px;
+      width: 320px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    }
 
-.game {
-background: #2a2a40;
-padding: 20px 30px;
-border-radius: 12px;
-width: 320px;
-text-align: center;
-box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-}
+    h1 {
+      margin-top: 0;
+    }
 
+    .score {
+      font-size: 24px;
+      margin: 15px 0;
+    }
 
-h1 {
-margin-top: 0;
-}
+    button {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
 
+    .click {
+      background: #4caf50;
+      color: #fff;
+    }
 
-.score {
-font-size: 24px;
-margin: 15px 0;
-}
+    .upgrade {
+      background: #2196f3;
+      color: #fff;
+    }
 
+    button:disabled {
+      background: #555;
+      cursor: not-allowed;
+    }
 
-button {
-width: 100%;
-padding: 12px;
-margin: 8px 0;
-border: none;
-border-radius: 8px;
-font-size: 16px;
-cursor: pointer;
-}
-
-
-.click {
-background: #4caf50;
-color: #fff;
-}
-
-
-.upgrade {
-background: #2196f3;
-color: #fff;
-}
-
-
-button:disabled {
-background: #555;
-cursor: not-allowed;
-}
-
-
-.stats {
-font-size: 14px;
-opacity: 0.9;
-margin-top: 10px;
-}
-</style>
+    .stats {
+      font-size: 14px;
+      opacity: 0.9;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
-<div class="game">
-<h1>Idle Clicker</h1>
+  <div class="game">
+    <h1>Idle Clicker</h1>
 
+    <div class="score">Coins: <span id="coins">0</span></div>
 
-<div class="score">Coins: <span id="coins">0</span></div>
+    <button class="click" onclick="clickCoin()">Click (+<span id="clickPower">1</span>)</button>
 
+    <button class="upgrade" onclick="buyUpgrade()" id="upgradeBtn">
+      Buy Auto Miner (+1/sec) (Cost: <span id="upgradeCost">10</span>)
+    </button>
 
-<button class="click" onclick="clickCoin()">Click (+1)</button>
+    <button class="upgrade" onclick="buyClickUpgrade()" id="clickUpgradeBtn">
+      Upgrade Click (+1) (Cost: <span id="clickUpgradeCost">25</span>)
+    </button>
 
+    <button class="upgrade" onclick="buySuperMiner()" id="superMinerBtn">
+      Buy Super Miner (+5/sec) (Cost: <span id="superMinerCost">100</span>)
+    </button>
 
-<button class="upgrade" onclick="buyUpgrade()" id="upgradeBtn">
-Buy Auto Miner (Cost: <span id="upgradeCost">10</span>)
-</button>
+    <div class="stats">
+      Auto miners: <span id="miners">0</span><br />
+      Super miners: <span id="superMiners">0</span><br />
+      Coins/sec: <span id="cps">0</span>
+    </div>
+  </div>
 
+  <script>
+    let coins = 0;
+    let miners = 0;
+    let upgradeCost = 10;
 
-<div class="stats">
-Auto miners: <span id="miners">0</span><br />
-Coins/sec: <span id="cps">0</span>
-</div>
-</div>
+    let clickPower = 1;
+    let clickUpgradeCost = 25;
 
+    let superMiners = 0;
+    let superMinerCost = 100;
 
-<script>
-let coins = 0;
-let miners = 0;
-let upgradeCost = 10;
+    const coinsEl = document.getElementById("coins");
+    const minersEl = document.getElementById("miners");
+    const cpsEl = document.getElementById("cps");
+    const upgradeCostEl = document.getElementById("upgradeCost");
+    const upgradeBtn = document.getElementById("upgradeBtn");
 
+    function updateUI() {
+      coinsEl.textContent = Math.floor(coins);
+      minersEl.textContent = miners;
+      document.getElementById("superMiners").textContent = superMiners;
+      document.getElementById("clickPower").textContent = clickPower;
 
-const coinsEl = document.getElementById("coins");
-const minersEl = document.getElementById("miners");
-const cpsEl = document.getElementById("cps");
-const upgradeCostEl = document.getElementById("upgradeCost");
-const upgradeBtn = document.getElementById("upgradeBtn");
+      const cps = miners + superMiners * 5;
+      cpsEl.textContent = cps;
 
+      upgradeCostEl.textContent = upgradeCost;
+      document.getElementById("clickUpgradeCost").textContent = clickUpgradeCost;
+      document.getElementById("superMinerCost").textContent = superMinerCost;
 
-function updateUI() {
-coinsEl.textContent = Math.floor(coins);
-minersEl.textContent = miners;
-cpsEl.textContent = miners;
-upgradeCostEl.textContent = upgradeCost;
-upgradeBtn.disabled = coins < upgradeCost;
-}
+      upgradeBtn.disabled = coins < upgradeCost;
+      document.getElementById("clickUpgradeBtn").disabled = coins < clickUpgradeCost;
+      document.getElementById("superMinerBtn").disabled = coins < superMinerCost;
+    }
 
+    function clickCoin() {
+      coins += clickPower;
+      function buyClickUpgrade() {
+      if (coins >= clickUpgradeCost) {
+        coins -= clickUpgradeCost;
+        clickPower += 1;
+        clickUpgradeCost = Math.floor(clickUpgradeCost * 1.7);
+        updateUI();
+      }
+    }
 
-function clickCoin() {
-coins += 1;
-updateUI();
-}
+    function buySuperMiner() {
+      if (coins >= superMinerCost) {
+        coins -= superMinerCost;
+        superMiners += 1;
+        superMinerCost = Math.floor(superMinerCost * 2);
+        updateUI();
+      }
+    }
 
+    updateUI();
+    }
 
-function buyUpgrade() {
-if (coins >= upgradeCost) {
-coins -= upgradeCost;
-miners += 1;
-upgradeCost = Math.floor(upgradeCost * 1.5);
-updateUI();
-}
-}
+    function buyUpgrade() {
+      if (coins >= upgradeCost) {
+        coins -= upgradeCost;
+        miners += 1;
+        upgradeCost = Math.floor(upgradeCost * 1.5);
+        updateUI();
+      }
+    }
+    }
 
+    // Idle income loop (once per second)
+    setInterval(() => {
+      coins += miners;
+      coins += superMiners * 5;
+      updateUI();
+    }, 1000);
 
-// Idle income loop (once per second)
-setInterval(() => {
-coins += miners;
-updateUI();
-}, 1000);
+    updateUI();
+  // ---- SAVE / LOAD ----
+    function saveGame() {
+      const data = { coins, miners, upgradeCost };
+      localStorage.setItem("idleSave", JSON.stringify(data));
+    }
 
+    function loadGame() {
+      const save = localStorage.getItem("idleSave");
+      if (save) {
+        const data = JSON.parse(save);
+        coins = data.coins || 0;
+        miners = data.miners || 0;
+        upgradeCost = data.upgradeCost || 10;
+      }
+    }
 
-updateUI();
-</script>
+    setInterval(saveGame, 5000);
+
+    loadGame();
+    updateUI();
+
+    </script>
 </body>
 </html>
