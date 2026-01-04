@@ -88,4 +88,61 @@ margin-top: 10px;
 <button class="upgrade" onclick="buyUpgrade()" id="upgradeBtn">
 Buy Auto Miner (Cost: <span id="upgradeCost">10</span>)
 </button>
+
+
+<div class="stats">
+Auto miners: <span id="miners">0</span><br />
+Coins/sec: <span id="cps">0</span>
+</div>
+</div>
+
+
+<script>
+let coins = 0;
+let miners = 0;
+let upgradeCost = 10;
+
+
+const coinsEl = document.getElementById("coins");
+const minersEl = document.getElementById("miners");
+const cpsEl = document.getElementById("cps");
+const upgradeCostEl = document.getElementById("upgradeCost");
+const upgradeBtn = document.getElementById("upgradeBtn");
+
+
+function updateUI() {
+coinsEl.textContent = Math.floor(coins);
+minersEl.textContent = miners;
+cpsEl.textContent = miners;
+upgradeCostEl.textContent = upgradeCost;
+upgradeBtn.disabled = coins < upgradeCost;
+}
+
+
+function clickCoin() {
+coins += 1;
+updateUI();
+}
+
+
+function buyUpgrade() {
+if (coins >= upgradeCost) {
+coins -= upgradeCost;
+miners += 1;
+upgradeCost = Math.floor(upgradeCost * 1.5);
+updateUI();
+}
+}
+
+
+// Idle income loop (once per second)
+setInterval(() => {
+coins += miners;
+updateUI();
+}, 1000);
+
+
+updateUI();
+</script>
+</body>
 </html>
