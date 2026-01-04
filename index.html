@@ -132,6 +132,7 @@
 
     function clickCoin() {
       coins += clickPower;
+    }
       // Click power upgrade
     function buyClickUpgrade() {
       if (coins >= clickUpgradeCost) {
@@ -140,7 +141,6 @@
         clickUpgradeCost = Math.floor(clickUpgradeCost * 1.7);
         updateUI();
       }
-    }
     }
 
     // Super miner upgrade
@@ -151,7 +151,6 @@
         superMinerCost = Math.floor(superMinerCost * 2);
         updateUI();
       }
-    }
     }
 
     updateUI();
@@ -164,7 +163,6 @@
         upgradeCost = Math.floor(upgradeCost * 1.5);
         updateUI();
       }
-    }
     }
 
     // Idle income loop (once per second)
