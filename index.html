@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Simple Idle Game</title>
+<style>
+body {
+font-family: Arial, sans-serif;
+background: #1e1e2f;
+color: #ffffff;
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100vh;
+margin: 0;
+}
+
+
+.game {
+background: #2a2a40;
+padding: 20px 30px;
+border-radius: 12px;
+width: 320px;
+text-align: center;
+box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+
+h1 {
+margin-top: 0;
+}
+
+
+.score {
+font-size: 24px;
+margin: 15px 0;
+}
+
+
+button {
+width: 100%;
+padding: 12px;
+margin: 8px 0;
+border: none;
+border-radius: 8px;
+font-size: 16px;
+cursor: pointer;
+}
+
+
+.click {
+background: #4caf50;
+color: #fff;
+}
+
+
+.upgrade {
+background: #2196f3;
+color: #fff;
+}
+
+
+button:disabled {
+background: #555;
+cursor: not-allowed;
+}
+
+
+.stats {
+font-size: 14px;
+opacity: 0.9;
+margin-top: 10px;
+}
+</style>
+</head>
+<body>
+<div class="game">
+<h1>Idle Clicker</h1>
+
+
+<div class="score">Coins: <span id="coins">0</span></div>
+
+
+<button class="click" onclick="clickCoin()">Click (+1)</button>
+
+
+<button class="upgrade" onclick="buyUpgrade()" id="upgradeBtn">
+Buy Auto Miner (Cost: <span id="upgradeCost">10</span>)
+</button>
+</html>
